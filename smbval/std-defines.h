@@ -5,7 +5,7 @@
 
    Copyright (C) 1996, Richard Sharpe
 
-/* One day we will conditionalize these on OS types ... */
+   One day we will conditionalize these on OS types ... */
 
 /*
    This program is free software; you can redistribute it and/or modify

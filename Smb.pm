@@ -18,10 +18,19 @@ require AutoLoader;
 	NTV_PROTOCOL_ERROR
 	NTV_SERVER_ERROR
 );
-$VERSION = '0.8';
+$VERSION = '0.91';
 
 sub authen {
-  my ($username, $password, $server, $backup, $domain) = @_;
+  my @args = @_;
+
+  # Truncate everything to length 80 to avoid poor coding practices in the
+  # smbvalid.a (buffer overflows) PMK--fixme in smbvalid.a when possible.
+  for my $i ( 0..$#args ) {
+    $args[$i] = substr($args[$i], 0, 80);
+  }
+
+  my($username, $password, $server, $backup, $domain) = @args;
+
   my $res = Valid_User($username, $password, $server, $backup, $domain);
   $res
 }

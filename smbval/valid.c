@@ -1,8 +1,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <syslog.h>
-#include "smblib.h"
+#include "smblib-priv.h"
 #include "valid.h"
+
+SMB_Handle_Type SMB_Connect_Server(void *, char *, char *);
 
 int Valid_User(char *USERNAME,char *PASSWORD,char *SERVER,char *BACKUP, char *DOMAIN)
 {
@@ -15,7 +17,7 @@ int Valid_User(char *USERNAME,char *PASSWORD,char *SERVER,char *BACKUP, char *DO
 			    "NT LM 0.12",
 			    "NT LANMAN 1.0",
 			    NULL};
-  void *con;
+  SMB_Handle_Type con;
 
   SMB_Init();
   con = SMB_Connect_Server(NULL, SERVER, DOMAIN);
@@ -29,6 +31,14 @@ int Valid_User(char *USERNAME,char *PASSWORD,char *SERVER,char *BACKUP, char *DO
     SMB_Discon(con,0);
     return(NTV_PROTOCOL_ERROR);
   }
+
+  /* Test for a server in share level mode do not authenticate against it */
+  if (con -> Security == 0)
+    {
+      SMB_Discon(con,0);
+      return(NTV_PROTOCOL_ERROR);
+    }
+
   if (SMB_Logon_Server(con, USERNAME, PASSWORD) < 0) {
     SMB_Discon(con,0);
     return(NTV_LOGON_ERROR);

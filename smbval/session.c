@@ -23,6 +23,9 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include <malloc.h>
+#include <string.h>
+
 int RFCNB_errno = 0;
 int RFCNB_saved_errno = 0;
 #define RFCNB_ERRNO
@@ -31,8 +34,11 @@ int RFCNB_saved_errno = 0;
 #include <netinet/tcp.h>
 #include "rfcnb-priv.h"
 #include "rfcnb-util.h"
+#include "rfcnb-io.h"
 
 int RFCNB_Stats[RFCNB_MAX_STATS];
+
+int RFCNB_Free_Pkt(struct RFCNB_Pkt *pkt);
 
 void (*Prot_Print_Routine)() = NULL;      /* Pointer to print routine */
 
@@ -222,7 +228,8 @@ int RFCNB_Send(struct RFCNB_Con *Con_Handle, struct RFCNB_Pkt *udata, int Length
 
 int RFCNB_Recv(void *con_Handle, struct RFCNB_Pkt *Data, int Length)
 
-{ struct RFCNB_Pkt *pkt; struct RFCNB_Hdr *hdr;
+{ struct RFCNB_Pkt *pkt;
+/*  struct RFCNB_Hdr *hdr; */
   int ret_len;
 
   if (con_Handle == NULL){
@@ -304,7 +311,7 @@ int RFCNB_Set_Sock_NoDelay(struct RFCNB_Con *con_Handle, BOOL yn)
 void *RFCNB_Listen()
 
 {
-
+  return NULL;
 }
 
 /* Pick up the last error response as a string, hmmm, this routine should */
@@ -351,7 +358,7 @@ int RFCNB_Get_Error_Msg(int code, char *msg_buf, int len)
 {
 
   strncpy(msg_buf, RFCNB_Error_Strings[abs(code)], len);
-
+  return 0;
 }
 
 /* Register a higher level protocol print routine */

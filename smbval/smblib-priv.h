@@ -114,6 +114,7 @@ typedef unsigned int   uint32;
 #define SMBfclose        0x84   /* find close */
 #define SMBinvalid       0xFE   /* invalid command */
 
+#define SMBulogoffX	 0x74   /* user logoff */
 /* Any more ? */
 
 #define SMBdatablockID     0x01  /* A data block identifier */

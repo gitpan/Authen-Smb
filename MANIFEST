@@ -18,7 +18,6 @@ smbval/rfcnb-util.c
 smbval/rfcnb-util.h
 smbval/rfcnb.h
 smbval/session.c
-smbval/smbauth.c
 smbval/smbdes.c
 smbval/smbencrypt.c
 smbval/smblib-common.h
@@ -31,4 +30,3 @@ smbval/std-includes.h
 smbval/valid.c
 smbval/valid.h
 test.pl
-valid.h

@@ -23,6 +23,9 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "config.h"
+#include <malloc.h>
+
 int SMBlib_errno;
 int SMBlib_SMB_Error;
 #define SMBLIB_ERRNO
@@ -332,14 +335,13 @@ int SMB_Logon_Server(SMB_Handle_Type Con_Handle, char *UserName,
   }
 
   strcpy(pword, PassWord);
-#ifdef PAM_SMB_ENC_PASS
+
   if (Con_Handle -> encrypt_passwords)
   {
     pass_len=24;
     SMBencrypt((uchar *) PassWord, (uchar *)Con_Handle -> Encrypt_Key,(uchar *)pword); 
   } 
   else 
-#endif
 	pass_len=strlen(pword);
 
 
@@ -539,6 +541,77 @@ int SMB_Logon_Server(SMB_Handle_Type Con_Handle, char *UserName,
 
 }
 
+int SMB_Logoff_Server(SMB_Handle_Type Con_Handle)
+{
+  struct RFCNB_Pkt *pkt;
+  int pkt_len;
+
+  
+  pkt_len = SMB_ssetpLM_len;
+
+  pkt = (struct RFCNB_Pkt *)RFCNB_Alloc_Pkt(pkt_len);
+
+  if (pkt == NULL) {
+    
+    SMBlib_errno = SMBlibE_NoSpace;
+    return(SMBlibE_BAD); /* Should handle the error */
+    
+  }
+
+  bzero(SMB_Hdr(pkt), SMB_ssetpNTLM_len);
+  
+  SIVAL(SMB_Hdr(pkt), SMB_hdr_idf_offset, SMB_DEF_IDF);  /* Plunk in IDF */
+  *(SMB_Hdr(pkt) + SMB_hdr_com_offset) = SMBulogoffX;
+  SSVAL(SMB_Hdr(pkt), SMB_hdr_pid_offset, Con_Handle -> pid);
+  SSVAL(SMB_Hdr(pkt), SMB_hdr_tid_offset, 0);
+  SSVAL(SMB_Hdr(pkt), SMB_hdr_mid_offset, Con_Handle -> mid);
+  SSVAL(SMB_Hdr(pkt), SMB_hdr_uid_offset, Con_Handle -> uid);
+  *(SMB_Hdr(pkt) + SMB_hdr_wct_offset) = 13;
+  *(SMB_Hdr(pkt) + SMB_hdr_axc_offset) = 0xFF;    /* No extra command */
+  SSVAL(SMB_Hdr(pkt), SMB_hdr_axo_offset, 0);    
+  
+    
+  if (RFCNB_Send(Con_Handle -> Trans_Connect, pkt, pkt_len) < 0)
+    {
+      
+#ifdef DEBUG
+	fprintf(stderr, "Error sending UlogOffX request\n");
+#endif
+	
+	RFCNB_Free_Pkt(pkt);
+	SMBlib_errno = SMBlibE_SendFailed;
+	return(SMBlibE_BAD);
+      }    
+
+    if (RFCNB_Recv(Con_Handle -> Trans_Connect, pkt, pkt_len) < 0) 
+      {
+	
+#ifdef DEBUG
+	fprintf(stderr, "Error receiving response uLogoffAndX\n");
+#endif
+	
+	RFCNB_Free_Pkt(pkt);
+	SMBlib_errno = SMBlibE_RecvFailed;
+	return(SMBlibE_BAD);
+      }
+
+    if (CVAL(SMB_Hdr(pkt), SMB_hdr_rcls_offset) != SMBC_SUCCESS)
+      {  /* Process error */
+
+#ifdef DEBUG
+	fprintf(stderr, "SMB_UlogoffAndX failed with errorclass = %i, Error Code = %i\n",
+		CVAL(SMB_Hdr(pkt), SMB_hdr_rcls_offset),
+		SVAL(SMB_Hdr(pkt), SMB_hdr_err_offset));
+#endif
+
+	SMBlib_SMB_Error = IVAL(SMB_Hdr(pkt), SMB_hdr_rcls_offset);
+	RFCNB_Free_Pkt(pkt);
+	SMBlib_errno = SMBlibE_Remote;
+	return(SMBlibE_BAD);
+	
+      }
+    return 0;
+}
 
 /* Disconnect from the server, and disconnect all tree connects */
 
@@ -556,3 +629,9 @@ int SMB_Discon(SMB_Handle_Type Con_Handle, BOOL KeepHandle)
   return(0);
 
 }
+
+
+
+
+
+

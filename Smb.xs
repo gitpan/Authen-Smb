@@ -8,8 +8,6 @@ extern "C" {
 }
 #endif
 
-#include "valid.h"
-
 static int
 not_here(s)
 char *s;

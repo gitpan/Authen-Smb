@@ -23,6 +23,10 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include <string.h>
+#include <malloc.h>
+#include <arpa/inet.h>
+
 #include "std-includes.h"
 #include "rfcnb-priv.h"
 #include "rfcnb-util.h"
@@ -219,7 +223,7 @@ int RFCNB_Free_Pkt(struct RFCNB_Pkt *pkt)
     pkt = pkt_next;
 
   }
-
+  return 0;
 }
 
 /* Print an RFCNB packet */
@@ -411,8 +415,10 @@ int RFCNB_Session_Req(struct RFCNB_Con *con,
 { char *sess_pkt;
 
   /* Response packet should be no more than 9 bytes, make 16 jic */
-
-  char ln1[16], ln2[16], n1[32], n2[32], resp[16];
+/* 
+  char ln1[16], ln2[16];
+  char n1[32], n2[32]; */
+  char resp[16];
   int len;
   struct RFCNB_Pkt *pkt, res_pkt;
 

@@ -29,6 +29,7 @@
 #include "rfcnb-io.h"
 #include <sys/uio.h>
 #include <sys/signal.h>
+#include <string.h>
 
 int RFCNB_Timeout = 0;    /* Timeout in seconds ... */
 
@@ -66,20 +67,7 @@ int RFCNB_Set_Timeout(int seconds)
       return(-1);
 #else
     inact.sa_handler = (void (*)())rfcnb_alarm;
-#ifdef SOLARIS
-    /* Solaris seems to have an array of vectors ... */
-    inact.sa_mask.__sigbits[0] = 0;
-    inact.sa_mask.__sigbits[1] = 0;
-    inact.sa_mask.__sigbits[2] = 0;
-    inact.sa_mask.__sigbits[3] = 0;
-#else
-#ifdef __GLIBC__
-    for (temp = 0 ; temp < 32 ; temp ++)
-	inact.sa_mask.__val[temp]=0;
-#else
-    inact.sa_mask = 0;
-#endif
-#endif
+    sigemptyset(&inact.sa_mask);
     inact.sa_flags = 0;    /* Don't restart */
 
     if (sigaction(SIGALRM, &inact, &outact) < 0)

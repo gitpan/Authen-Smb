@@ -31,3 +31,23 @@ Revision history for Perl extension Authen::Smb.
 0.8  Mon Apr 19 19:37:13 1999
         - Shot another smbval bug.
 
+0.81  Sun Jun  6 10:2:09 1999
+	- Updated to the latest smbval library, hopefully resolving some
+	  segfaults and authentication problems for usernames and passwords
+	  with weird characters in them.
+	- Cleaned up Smb.xs
+	- Unreleased version
+
+0.9  Sun Jun  6 18:50:23 1999
+	- While toying around with smbval, discovered some buffer overflows
+	  in the library.  Worked around them in the perl portion of the
+	  module for now, but will get in touch with author to try and
+	  merge some patches to resolve the overflows in the library itself.
+	  Because of these overflows, it is _critical_ that anyone using
+	  Authen::Smb, including those using Apache::AuthenSmb, upgrade to
+	  0.9.  I have not spent a lot of time investigating the overflows,
+	  but I believe them to be exploitable.
+
+0.91 Mon Jun  7 08:03:47 1999
+	- Fixed a ridiculous thinko in Smb.pm (thansk Daniel Myers)
+

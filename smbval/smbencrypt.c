@@ -26,7 +26,7 @@
 #include <string.h>
 #include <sys/vfs.h>
 #include <netinet/in.h>
-
+#include <ctype.h>
 #include "smblib-priv.h"
 #define uchar unsigned char
 extern int DEBUGLEVEL;
@@ -35,7 +35,9 @@ extern int DEBUGLEVEL;
 
 char *StrnCpy(char *dest,char *src,int n);
 void strupper(char *s);
-
+void E_P16(unsigned char *p14,unsigned char *p16);
+void E_P24(unsigned char *p21, unsigned char *c8, unsigned char *p24);
+void mdfour(unsigned char *out, unsigned char *in, int n);
 /*
    This implements the X/Open SMB password encryption
    It takes a password, a 8 byte "crypt key" and puts 24 bytes of 

@@ -24,8 +24,11 @@
 */
 
 #include "smblib-priv.h"
+#include <malloc.h>
 
 #include "rfcnb.h"
+
+int RFCNB_Free_Pkt(struct RFCNB_Pkt *pkt);
 
 /* Print out an SMB pkt in all its gory detail ... */
 
@@ -196,8 +199,8 @@ int SMB_Figure_Protocol(char *dialects[], int prot_index)
 
 int SMB_Negotiate(SMB_Handle_Type Con_Handle, char *Prots[])
 
-{ struct SMB_Neg_Prot_Def *prot_pkt;
-  struct SMB_Neg_Prot_Resp_Def *resp_pkt;
+{/* struct SMB_Neg_Prot_Def *prot_pkt;
+ struct SMB_Neg_Prot_Resp_Def *resp_pkt; */
   struct RFCNB_Pkt *pkt;
   int prots_len, i, pkt_len, prot, alloc_len;
   char *p;
@@ -410,7 +413,8 @@ int SMB_Negotiate(SMB_Handle_Type Con_Handle, char *Prots[])
 
 void SMB_Get_My_Name(char *name, int len)
 
-{ int loc;
+{ 
+  /* int loc; */
 
   if (gethostname(name, len) < 0) { /* Error getting name */
 
@@ -445,7 +449,7 @@ SMB_Tree_Handle SMB_TreeConnect(SMB_Handle_Type Con_Handle,
 
   /* Figure out how much space is needed for path, password, dev ... */
 
-  if (path == NULL | password == NULL | device == NULL) {
+  if (path == NULL || password == NULL || device == NULL) {
 
 #ifdef DEBUG
     fprintf(stderr, "Bad parameter passed to SMB_TreeConnect\n");
