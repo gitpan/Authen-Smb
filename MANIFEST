@@ -9,7 +9,6 @@ test.pl
 valid.h
 smbval/Makefile.PL
 smbval/byteorder.h
-smbval/hints
 smbval/md4.c
 smbval/rfcnb-common.h
 smbval/rfcnb-error.h
