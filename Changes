@@ -15,3 +15,9 @@ Revision history for Perl extension Authen::Smb.
 	- Fixed the versioning in Smb.pm so that CPAN clients will download
           the correct version.
 
+0.5  Thu Mar 11 19:45:00 1999
+	- Finally added Lupe Christoph's <lupe@alanya.m.isar.de> patches to
+          make builds less of a hassle.  .Fixed the versioning in Smb.pm so
+          that CPAN clients will download the correct version.  Thanks Lupe!
+	- Updated the MANIFEST
+

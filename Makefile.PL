@@ -10,3 +10,9 @@ WriteMakefile(
     'MYEXTLIB'  => 'smbval/smbvalid$(LIB_EXT)',
 );
 
+sub MY::postamble {
+'
+$(MYEXTLIB): smbval/Makefile
+	cd smbval && $(MAKE) $(PASTHRU)
+';
+}
