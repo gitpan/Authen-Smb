@@ -21,6 +21,12 @@ Revision history for Perl extension Authen::Smb.
           that CPAN clients will download the correct version.  Thanks Lupe!
 	- Updated the MANIFEST
 
-0.5  Thu Mar 11 20:00:00 1999
+0.6  Thu Mar 11 20:00:00 1999
 	- Updated the MANIFEST correctly. :-)
+	
+0.7  Mon Apr 19 19:22:13 1999
+        - Resolved some segfault problems on various platforms by reducing
+          the optimization during the smbval compile.
+	  
+	  
 
