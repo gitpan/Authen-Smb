@@ -1,10 +1,13 @@
 Revision history for Perl extension Authen::Smb.
 
-0.01  Wed Mar 11 10:26:43 1998
+0.1  Wed Mar 11 10:26:43 1998
 	- original version; Not particularly well documented, no fancy
 	  OO features.
 
-0.02  Thu Jul 30 20:46:00 1998
+0.2  Thu Jul 30 20:46:00 1998
 	- no real changes, some minor documentation updates.  First CPAN
 	  release.
+
+0.3  Sun Aug  2 13:58:00 1998
+	- Removed the object files that accidentally got left in smbval/
 
