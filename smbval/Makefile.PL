@@ -4,7 +4,6 @@ WriteMakefile(
 	NAME      => 'Authen::Smb::smbvalid',
 	SKIP      => [qw(all pure_all static static_lib dynamic dynamic_lib test)],
 	clean     => {'FILES' => 'smbvalid$(LIB_EXT)'},
-	OPTIMIZE  => ' ',
 );
 
 sub MY::top_targets {

@@ -18,7 +18,7 @@ require AutoLoader;
 	NTV_PROTOCOL_ERROR
 	NTV_SERVER_ERROR
 );
-$VERSION = '0.7';
+$VERSION = '0.8';
 
 sub authen {
   my ($username, $password, $server, $backup, $domain) = @_;

@@ -8,6 +8,7 @@ WriteMakefile(
     'DEFINE'	=> '',     # e.g., '-DHAVE_SOMETHING' 
     'INC'	=> '',     # e.g., '-I/usr/include/other' 
     'MYEXTLIB'  => 'smbval/smbvalid$(LIB_EXT)',
+    'OPTIMIZE'  => ' ',
 );
 
 sub MY::postamble {

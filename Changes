@@ -28,5 +28,6 @@ Revision history for Perl extension Authen::Smb.
         - Resolved some segfault problems on various platforms by reducing
           the optimization during the smbval compile.
 	  
-	  
+0.8  Mon Apr 19 19:37:13 1999
+        - Shot another smbval bug.
 
