@@ -1,0 +1,6 @@
+Before building Authen::Smb, you need to get smbval built.  You have to do
+this by hand currently, becuase I'm lazy.
+
+cd to the smbval directory and type 'make'.  You may have to specify your
+platform in the CFLAGS (ie -DSOLARIS).  Sorry for the inconvenience, but
+this is a 15 minute first cut.

@@ -1,0 +1,6 @@
+Changes
+MANIFEST
+Makefile.PL
+Smb.pm
+Smb.xs
+test.pl
